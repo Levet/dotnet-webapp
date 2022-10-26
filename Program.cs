@@ -13,17 +13,27 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+var dogs = new Services.Dogs();
 
 // API
 app.MapGet("/api/get-data", async () => 
 {
     try {
-        string json = await Services.Dogs.HandleDogs();
+
+        dogs = new Services.Dogs();
+
+        string json = await dogs.HandleDogs();
         return json;
     }
     catch (Exception ex) {
-        return "Error";
+        return "{\"error\": \"Error\"}";
     }
+});
+
+app.MapGet("/api/cancel", () => 
+{
+    dogs.CancelDogs();
+    return "Cancelled";
 });
 
 app.UseHttpsRedirection();

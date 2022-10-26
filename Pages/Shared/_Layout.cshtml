@@ -7,31 +7,33 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/dotnet_webapp.styles.css" asp-append-version="true" />
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
-<body>
+<body id="app">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">dotnet_webapp</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
+                <a class="navbar-brand" asp-area="" asp-page="/Index">Dog Breeds Task-Based Async Example</a>
             </div>
         </nav>
     </header>
     <div class="container">
         <main role="main" class="pb-3">
+            <button class="btn btn-primary" v-on:click="getDogBreeds">Get Dog Breed List</button>
+            <button v-if="loading" class="btn btn-primary" v-on:click="cancel">Cancel</button>
+            <div v-if="loading === false && dogBreeds.length > 0">
+                <h1>Dog Breeds</h1>
+                <ul>
+                    <li v-for="breed in dogBreeds">{{breed}}</li>
+                </ul>
+            </div>
+            <div v-if="loading">
+                <h1>Loading...</h1>
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
             @RenderBody()
         </main>
     </div>
@@ -42,7 +44,47 @@
         </div>
     </footer>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script>
+        var app = Vue.createApp({
+            data() {
+                return {
+                    message: 'Hello Vue 3!',
+                    dogBreeds: [],
+                    loading: false,
+                }
+            },
+            mounted() {
+                console.log('vue mounted')
+            },
+            methods: {
+                getDogBreeds() {
+                    this.loading = true;
+                    axios.get('/api/get-data')
+                        .then(response => {
+                            if(response.data.status === 'Cancelled') {
+                                alert('Request was canceled');
+                                this.loading = false;
+                                this.dogBreeds = [];
+                                return;
+                            }
+                            this.dogBreeds = response.data;
+                            this.loading = false;
+                        })
+                        .catch(error => {
+                            this.loading = false;
+                        })
+                },
+                cancel() {
+
+                    axios.get('/api/cancel')
+                        .catch(error => {
+                            alert('error cancelling')
+                        })
+                }
+            }
+        })
+        app.mount('#app')
+    </script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 

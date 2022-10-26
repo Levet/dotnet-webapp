@@ -31,15 +31,29 @@ namespace Tasks
 
         public async Task<string> ProcessDogBreedsAsync(Models.DogsDto dogs, CancellationToken cancellationToken)
         {
-            var dogBreeds = dogs.Message.GetType().GetProperties().Select(x => x.Name).ToList();
-            await Task.Delay(10, cancellationToken);
+            Console.WriteLine("Processing dog breeds...");
+
+            List<string> dogBreeds = new List<string>();
+            foreach (var prop in dogs.Message.GetType().GetProperties()) 
+            {
+                dogBreeds.Add(prop.Name);
+
+                // Simulate a long-running task.
+                await Task.Delay(100, cancellationToken).ConfigureAwait(false);
+
+                if(cancellationToken.IsCancellationRequested)
+                {
+                    Console.WriteLine("Cancelling...");
+                    cancellationToken.ThrowIfCancellationRequested();
+                }
+            }
+
             string output = JsonSerializer.Serialize(dogBreeds);
             return output;
         }
 
         public async Task<string> ProcessDogBreedsAsync(Models.DogsDto dogs)
         {
-            // await Task.Delay(10000);
             List<string> dogBreeds = dogs.Message.GetType().GetProperties().Select(x => x.Name).ToList();
             string output = JsonSerializer.Serialize(dogBreeds);
             return output;
