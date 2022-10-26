@@ -20,6 +20,14 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
+            <p>
+                This is a demonstration of how to use the Task-based asynchronous pattern (TAP) to make asynchronous calls to a web API.
+                Using the button below you can retrieve a list of dog breeds from the <a href="https://dog.ceo/dog-api/">Dog API</a>.
+            </p>
+            <p>
+                Upon clicking the button below two tasks will be fired off, one to retrieve the JSON data, and another to simulate a long-running task resulting in the list of breeds.
+                The list of breeds will be displayed in a list below. Hitting cancel will stop the long-running task and trigger a cancelled response from the server.
+            </p>
             <button class="btn btn-primary" v-on:click="getDogBreeds">Get Dog Breed List</button>
             <button v-if="loading" class="btn btn-primary" v-on:click="cancel">Cancel</button>
             <div v-if="loading === false && dogBreeds.length > 0">
@@ -38,11 +46,6 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2022 - dotnet_webapp - <a asp-area="" asp-page="/Privacy">Privacy</a>
-        </div>
-    </footer>
 
     <script>
         var app = Vue.createApp({
