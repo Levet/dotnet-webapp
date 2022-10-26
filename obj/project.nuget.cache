@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "elnjBTQEdwBtUMsM06P2b/mBkXjhjJJ9OFOrAWA0sF6r3AKreAms9diWC9z35aqsRynLIe4+ZdSbhS6+8EdVAg==",
+  "success": true,
+  "projectFilePath": "/home/jordan/projects/dotnet-webapp/dotnet-webapp.csproj",
+  "expectedPackageFiles": [
+    "/home/jordan/.nuget/packages/system.runtime.compilerservices.unsafe/6.0.0/system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
+    "/home/jordan/.nuget/packages/system.text.encodings.web/6.0.0/system.text.encodings.web.6.0.0.nupkg.sha512",
+    "/home/jordan/.nuget/packages/system.text.json/6.0.6/system.text.json.6.0.6.nupkg.sha512"
+  ],
+  "logs": []
+}
