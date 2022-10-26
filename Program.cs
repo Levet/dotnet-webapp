@@ -15,11 +15,11 @@ if (!app.Environment.IsDevelopment())
 
 
 // API
-app.MapGet("/api/get-data", () => 
+app.MapGet("/api/get-data", async () => 
 {
     try {
-        Services.Dogs.HandleDogs();
-        return "Success";
+        string json = await Services.Dogs.HandleDogs();
+        return json;
     }
     catch (Exception ex) {
         return "Error";
